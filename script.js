@@ -11,7 +11,7 @@
 6. Function that changes the bg image to match the conditions
 7.Add error handling to API calls, catch etc.
 */
-const searchBox = document.querySelector("search-box");
+const searchBox = document.querySelector(".search-box");
 
 let lat;
 let lng;
@@ -34,14 +34,14 @@ const rendorWeather = function (data) {
         </section>
         <div class="current">
           <div class="temp">${Math.trunc(data.main.temp)}<span>°c</span></div>
-          <div class="weather">${data.weather[0].description}</div>
+          <div class="weather">${data.weather[0].main}</div>
           <div class="hi-low">${Math.trunc(
             data.main.temp_min
           )}°c / ${Math.trunc(data.main.temp_max)}°c</div>
         </div>
     `;
 
-  document.querySelector("main").insertAdjacentHTML("beforeend", html);
+  document.querySelector("main").innerHTML = html;
 };
 
 const getWeather = function (lat, lon) {
@@ -69,4 +69,10 @@ const getLocation = function (city) {
     .catch((error) => console.log(`A Problem Occured 😪 ${error.message}`));
 };
 
-getLocation("london");
+searchBox.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    const city = searchBox.value;
+    getLocation(city);
+    searchBox.value = "";
+  }
+});
